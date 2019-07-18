@@ -9,7 +9,7 @@ import (
 
 func Div(x, y int) int {
 	if y == 0 {
-		println("must not 0")
+		println("must not 0") // don't know how to handle this
 	}
 	return x / y
 }
