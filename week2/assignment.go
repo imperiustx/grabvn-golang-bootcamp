@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
+	"sync"
 	"unicode"
 )
 
@@ -12,7 +13,8 @@ type result struct {
 	string
 	int
 }
-
+// close file , name of var type + name, comment about the function, use worker pool, benchmark, write test, 
+// 
 func fileRead(fi string) map[string]int {
 	data, err := ioutil.ReadFile(fi)
 	if err != nil {
@@ -49,6 +51,7 @@ func folderRead(fo string) []string {
 }
 
 func main() {
+	var wg sync.WaitGroup
 
 	resultMap := make(map[string]int)
 	resultChannel := make(chan result)
@@ -57,12 +60,14 @@ func main() {
 		go func(w string) {
 			resultChannel <- result{w, fileRead(w)[w]}
 		}(file)
+		go 
 	}
 
 	for i := 0; i < len(folderRead(".")); i++ {
 		result := <-resultChannel
 		resultMap[result.string] = result.int
 	}
+	wg.Wait()
 	fmt.Println(resultMap)
 
 }
